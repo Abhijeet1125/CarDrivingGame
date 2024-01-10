@@ -1,0 +1,19 @@
+body{
+    background-color: #212121;
+    margin: 0px;
+    padding: 0px;
+}
+#playground {
+    margin: 0px; padding:  0px;
+    height: 100vh;
+    background-color: whitesmoke;
+    width: 50vw;
+    position: absolute;
+    transform: translate(-50% , -50%);
+    top: 50%;
+    left: 50%;
+}
+canvas{
+    padding: 0px ;
+    margin: 0px;
+}
