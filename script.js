@@ -107,6 +107,21 @@ im.src = "images/cars.png"
 let  GF = 0 ; 
 let inc = [ 1 , 1 , 1 , 1, 1 ];
 
+
+
+function checkCollide ( ia ,  ib ){
+    if (  ordi[ia].xx - ordi[ib].xx  > ordi[ib].wid ||
+        ordi[ib].xx - ordi[ia].xx  > ordi[ia].wid ||
+        ordi[ia].yy - ordi[ib].yy  > ordi[ia].hei  ||
+        ordi[ib].yy - ordi[ia].yy  > ordi[ib].hei 
+        ){
+            return 0 ; 
+        }
+    return 1 ; 
+}
+
+
+
 function animate() {
     GF ++ ; 
     if (x > imglen) { x -= imglen; }
@@ -125,12 +140,39 @@ function animate() {
         }        
     }
 
+    for ( let i = 1 ; i <= 6 ; i ++ ){
+        for ( let j  = i + 1 ; j <= 6 ; j ++ ){
+            if ( checkCollide ( i , j ) ){
+                let  tem = ordi[i].race + ordi[j].race  ;               
+                if ( ordi[i].yy > ordi[j].yy){                
+                    ordi[i].race = tem * 0.4   ; 
+                    ordi[j].race = tem  * 0.6  ; 
+                }
+                else { 
+                    ordi[i].race = tem * 0.6   ; 
+                    ordi[j].race = tem  * 0.4 ; 
+                }
+            }
+        }
+    }
+
+    for ( let i = 1 ; i <=  6 ; i ++){
+        if ( checkCollide( i ,  0)){
+            if ( ordi[i].yy - ordi[0].yy > 0.9 * ordi[0].hei  ){
+                ordi[i].race = 0.9* speed ;
+            }
+            else { 
+                alert ( "game over ");
+            }
+        }
+    }
+
     if ( GF %  5 == 0  ){
         let toch = Math.floor ( Math.random () * 7 );
         if ( ordi[toch].race < toch + 4   ){
             inc[toch] = 1 ; 
         }
-        else if ( ordi[toch].race > 15 - toch ){ inc[toch] = 0 ; }
+        else if ( ordi[toch].race > 10  ){ inc[toch] = 0 ; }
         if ( inc[toch] == 1 ){
             ordi[toch].race += Math.random () * 0.1 ;
         }
