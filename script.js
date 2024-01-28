@@ -103,11 +103,14 @@ let ordi = [
 let im = new Image ();
 im.src = "images/cars.png"
 
-
+// game frame and array to store car speed should inc or dec 
 let  GF = 0 ; 
 let inc = [ 1 , 1 , 1 , 1, 1 ];
 
-
+let lane_change  = Math.floor( Math.random() * 5 + 1)  ;
+let left = 1 ; 
+let leftlimit = wi / 9 ;
+let rightlimit = 71 *wi / 90;
 
 function checkCollide ( ia ,  ib ){
     if (  ordi[ia].xx - ordi[ib].xx  > ordi[ib].wid ||
@@ -140,6 +143,7 @@ function animate() {
         }        
     }
 
+    // collision between other cars 
     for ( let i = 1 ; i <= 6 ; i ++ ){
         for ( let j  = i + 1 ; j <= 6 ; j ++ ){
             if ( checkCollide ( i , j ) ){
@@ -156,10 +160,12 @@ function animate() {
         }
     }
 
+
+    // collision between driving and other cars 
     for ( let i = 1 ; i <=  6 ; i ++){
         if ( checkCollide( i ,  0)){
             if ( ordi[i].yy - ordi[0].yy > 0.9 * ordi[0].hei  ){
-                ordi[i].race = 0.9* speed ;
+                ordi[i].race = 0.5* speed ;
             }
             else { 
                 alert ( "game over ");
@@ -167,8 +173,9 @@ function animate() {
         }
     }
 
+    // changing the speed of cars 
     if ( GF %  5 == 0  ){
-        let toch = Math.floor ( Math.random () * 7 );
+        let toch = Math.floor ( Math.random () * 6 +1 );
         if ( ordi[toch].race < toch + 4   ){
             inc[toch] = 1 ; 
         }
@@ -178,6 +185,46 @@ function animate() {
         }
         else {
             ordi[toch].race -= Math.random () * 0.1 ;
+        }
+    }
+
+    // changing the lane of the cars 
+
+    if ( GF % 200 == 0 ){
+        for ( let  i = 1 ; i <= 6 ; i ++ ){
+            if ( ordi[i].race < 5 ){
+                lane_change = i ; 
+                break ; 
+            }
+        }
+        lane_change = Math.floor(Math.random() * 6 + 1 );
+        lane_change = Math.min ( 6 , lane_change);
+    }
+    if ( GF % 3 == 0 && GF%200 <120 ){
+        let le  ; 
+        le = ordi[lane_change].xx ;
+        if ( left ){
+            ordi[lane_change].xx -= 2 ;  
+        }
+        else { 
+            ordi [lane_change].xx += 2  ; 
+        }
+        let  tr = 0  ;
+        for ( let i = 0 ; i <=  6 ; i ++){
+            if ( i == lane_change ){ continue;}
+            if ( checkCollide( i ,  lane_change ) ){
+                tr = 1 ; 
+                break ; 
+            }
+        }
+        if ( ordi[lane_change].xx  < leftlimit ){
+            left = 0 ; 
+        }
+        else if ( ordi[lane_change].xx  > rightlimit){
+            left = 1 ; 
+        }
+        if ( tr ){
+            ordi[lane_change].xx = le ;
         }
     }
 
@@ -192,18 +239,18 @@ document.addEventListener('keydown', function (event) {
         speed += (1 / (speed * 2 + 10));
         if (speed > 16) { speed = 15; }
     } else if (event.code === 'ArrowDown') {
-        speed -= 0.01 * speed + 0.1;
+        speed -= 0.01 * speed + 0.2;
         if (speed <= 0) {
             speed = 0;
         }
     }
     if (event.code === 'ArrowLeft') {
-        ordi[0].xx -= 4 ; 
+        ordi[0].xx -= 6 ; 
         if ( ordi[0].xx  < wi / 9){
             ordi [0].xx = wi / 9 ;
         } 
     } else if (event.code === 'ArrowRight') {
-        ordi [0].xx += 4  ;
+        ordi [0].xx += 6  ;
         if ( ordi[0].xx  > 71 *wi / 90 ){
             ordi [0].xx = 71 *wi / 90;
         } 
