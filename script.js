@@ -20,7 +20,10 @@ let imglen = Math.floor((wi / 1080) * 1916)
 let x =  imglen - 5 ;
 
 let speed = 0;
-
+let totalScore = 0 ; 
+let fuel = 3000; 
+let target = -2*hi  ; 
+let round = 0 ; 
 
 
 let ordi = [
@@ -39,7 +42,7 @@ let ordi = [
         'hei' : wi / 4.6 ,
         'xx'  : wi / 2,
         'yy' :  hi - wi /4- 10 ,
-        'race': 0.5 ,
+        'race': 1 ,
     },
     {        
         'x' : 125,
@@ -50,7 +53,7 @@ let ordi = [
         'hei' : wi / 5 ,
         'xx'  : wi / 4 * 3,
         'yy' :  20 ,
-        'race': 0.5 ,
+        'race': 1.5 ,
     },
     {        
         'x' : 15,
@@ -61,7 +64,7 @@ let ordi = [
         'hei' : wi / 5 ,
         'xx'  : wi / 8 ,
         'yy' :  hi / 3 ,
-        'race': 0.5 ,
+        'race': 0.2 ,
     },
     {       
         'x' : 243,
@@ -72,7 +75,7 @@ let ordi = [
         'hei' : wi / 5 ,
         'xx'  : wi / 2,
         'yy' :  -hi / 2  ,
-        'race': 0.5 ,
+        'race': 2.5 ,
     },
     {        
         'x' : 362,
@@ -94,7 +97,7 @@ let ordi = [
         'hei' : wi / 5 ,
         'xx'  : wi / 3,
         'yy' :  -hi + 10  ,
-        'race': 0.5 ,
+        'race': 0.8 ,
     },
     
 ]
@@ -123,14 +126,28 @@ function checkCollide ( ia ,  ib ){
     return 1 ; 
 }
 
+const fillscore = document.querySelector('.fillscore');
+const fillspeed = document.querySelector('.fillspeed');
+const fillfuel = document.querySelector('.fillfuel');
 
+let stopp = 0 ; 
 
 function animate() {
     GF ++ ; 
+    fuel -=1 ; 
+    if ( fuel <=  0 ){ stopp = 1 ; }
+    target += speed;
+    if ( target >= hi ){      
+        target = -2*hi * ( round) -10 * hi;        
+        fuel = 3000
+        round ++ ; 
+    }
     if (x > imglen) { x -= imglen; }
     canvas.clearRect(0, 0, wi, hi);
     canvas.drawImage(back, 0, 0, 1080, 1916, 0, x, wi, imglen);
     canvas.drawImage(back, 0, 0, 1080, 1916, 0, x - imglen, wi, imglen + 2);
+    canvas.fillStyle = "green";
+    canvas.fillRect (leftlimit , target , rightlimit  , 15 );
     canvas.drawImage ( im , 15, 22, 60, 155, ordi[0].xx , ordi[0].yy,ordi[0].wid,ordi[0].hei )
     for ( let  i =  1  ; i <= 6 ; i ++ ){
         canvas.drawImage ( im , ordi[i].x , ordi[i].y,ordi[i].w,ordi[i].h, ordi[i].xx , ordi[i].yy,ordi[i].wid,ordi[i].hei )
@@ -165,10 +182,10 @@ function animate() {
     for ( let i = 1 ; i <=  6 ; i ++){
         if ( checkCollide( i ,  0)){
             if ( ordi[i].yy - ordi[0].yy > 0.9 * ordi[0].hei  ){
-                ordi[i].race = 0.5* speed ;
+                ordi[i].race = 0.7* speed ;
             }
             else { 
-                alert ( "game over ");
+                stopp = 1  ; 
             }
         }
     }
@@ -176,10 +193,10 @@ function animate() {
     // changing the speed of cars 
     if ( GF %  5 == 0  ){
         let toch = Math.floor ( Math.random () * 6 +1 );
-        if ( ordi[toch].race < toch + 4   ){
+        if ( ordi[toch].race < toch + 1   ){
             inc[toch] = 1 ; 
         }
-        else if ( ordi[toch].race > 10  ){ inc[toch] = 0 ; }
+        else if ( ordi[toch].race > 8  ){ inc[toch] = 0 ; }
         if ( inc[toch] == 1 ){
             ordi[toch].race += Math.random () * 0.1 ;
         }
@@ -227,9 +244,13 @@ function animate() {
             ordi[lane_change].xx = le ;
         }
     }
-
+    // updating speed and score 
+    totalScore += speed /100 ; 
+    fillscore.innerHTML = Math.floor( totalScore);
+    fillspeed.innerHTML =  Math.floor(speed * 12) ; 
+    fillfuel.innerHTML = `${Math.floor ( fuel / 30 )} %` ;
     x += speed;
-    requestAnimationFrame(animate);
+    if ( stopp == 0 ) {requestAnimationFrame(animate);}
 }
 animate();
 
