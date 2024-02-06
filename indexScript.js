@@ -1,3 +1,6 @@
+localStorage.setItem('HighScore', 0 );
+localStorage.setItem('NewScore', 0);
+
 let exit = document.getElementById("exit");
 exit.addEventListener("click", (e) => {
   window.open('about:blank', '_self');

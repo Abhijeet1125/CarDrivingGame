@@ -42,6 +42,10 @@ let round = 0;
 let leftlimit = wi / 9;
 let rightlimit = 71 * wi / 90;
 
+var localhighscore  = Math.floor(localStorage.getItem('HighScore'));
+localStorage.setItem('HighScore', localhighscore );
+localStorage.setItem('NewScore', 0);
+localStorage.setItem('maxSpeed', 0);
 
 let ordi = [
     {
@@ -69,7 +73,7 @@ let ordi = [
         'wid': wi / 10,
         'hei': wi / 5,
         'xx': wi / 4 * 3,
-        'yy': 20,
+        'yy': -20,
         'race': 1.5,
     },
     {
@@ -91,7 +95,7 @@ let ordi = [
         'wid': wi / 10,
         'hei': wi / 5,
         'xx': wi / 2,
-        'yy': -hi / 2,
+        'yy': -hi / 4,
         'race': 2.5,
     },
     {
@@ -174,10 +178,20 @@ const fillfuel = document.querySelector('.fillfuel');
 function playBack() {
     var audio = document.getElementById("country_loop");
     audio.play();
-    audio.volume = 0.3;
+    audio.volume = 0.4;
 }
 function stopBack() {
     var audio = document.getElementById("country_loop");
+    audio.pause();
+    audio.currentTime = 0;
+}
+function playwarn() {
+    var audio = document.getElementById("fuelbeep");
+    audio.play();
+    audio.volume = 0.3;
+}
+function stopwarn() {
+    var audio = document.getElementById("fuelbeep");
     audio.pause();
     audio.currentTime = 0;
 }
@@ -194,6 +208,10 @@ function animate() {
         fuel = 3000
         round++;
     }
+    if ( fuel < 1000 && fuel > 0  ){
+        playwarn();
+    }
+    else { stopwarn();}
     if (x > imglen) { x -= imglen; }
     canvas.clearRect(0, 0, wi, hi);
     canvas.drawImage(back, 0, 0, 1080, 1916, 0, x, wi, imglen);
@@ -302,8 +320,11 @@ function animate() {
     fillspeed.innerHTML = Math.floor(speed * 12);
     fillfuel.innerHTML = `${Math.floor(fuel / 30)} %`;
     x += speed;
+    localStorage.setItem('maxSpeed', Math.max(localStorage.getItem('maxSpeed') , speed *12));
     if (stopp == 0) { requestAnimationFrame(animate); }
-    else {
+    else {        
+        stopp = 0 ; 
+        localStorage.setItem('newScore', totalScore );
         window.open('end.html', '_self');
     }
 }
@@ -328,8 +349,8 @@ document.addEventListener('keydown', function (event) {
         }
     } else if (event.code === 'KeyL') {
         ordi[0].xx += 6;
-        if (ordi[0].xx > 71 * wi / 90) {
-            ordi[0].xx = 71 * wi / 90;
+        if (ordi[0].xx > 73 * wi / 90) {
+            ordi[0].xx = 73 * wi / 90;
         }
     }
     else if (event.code === 'KeyE') {
