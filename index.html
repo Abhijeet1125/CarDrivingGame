@@ -4,29 +4,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Car Driving</title>
-    <link rel="stylesheet" href="style.css">
-
+    <title>welcome</title>
+    <link rel="stylesheet" href="indexStyle.css">
 </head>
 
 <body>
-    <audio id="country_loop" loop>
-        <source src="sounds/country.mp3" type="audio/mp3" />        
-    </audio>
-    <audio id="fuelbeep">
-        <source src="sounds/fuel_beep.mp3" type="audio/mp3" />        
-    </audio>
-    <div style="position: relative; height: 100vh; width: 100vw; padding: 0px; margin: 0px;"></div>
-    <div id="playground">
-        <canvas id="can">
-
-        </canvas>
-
+    <div id="msg">
+        <h1>Instructions : </h1>
+        <ul>
+  
+            <li>
+                Don't hit the other cars.
+            </li>
+            <li>
+                Use the keys to control your car
+                <ul>
+                    <li>"J" to move left</li>
+                    <li>"L" to move right</li>
+                    <li>"K" to increase speed</li>
+                    <li>"space key" to slow down</li>
+                    <li>"E" to exit full screen</li>
+                </ul>
+            </li>
+            <li>
+                Get your fuel on the green line <br>
+                keep going .........
+            </li>
+        </ul>
+        <div style="text-align: center;">
+            <button id="exit">EXIT</button>
+            <button id="play">PLAY</button>
+        </div>
     </div>
-    <div id="score" >SCORE<hr><br> <div class="fillscore"> </div></div>
-    <div id="speed" >SPEED <hr><br> <div class="fillspeed"></div></div>
-    <div id="fuel" >FUEL <hr><br> <div class="fillfuel"> </div></div>
-    <script src="script.js"></script>
+    <script src="indexScript.js"></script>
 </body>
-
 </html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Driving</title>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+    <audio id="country_loop" loop>
+        <source src="sounds/country.mp3" type="audio/mp3" />        
+    </audio>
+    <audio id="fuelbeep">
+        <source src="sounds/fuel_beep.mp3" type="audio/mp3" />        
+    </audio>
+    <div style="position: relative; height: 100vh; width: 100vw; padding: 0px; margin: 0px;"></div>
+    <div id="playground">
+        <canvas id="can">
+
+        </canvas>
+
+    </div>
+    <div id="score" >SCORE<hr><br> <div class="fillscore"> </div></div>
+    <div id="speed" >SPEED <hr><br> <div class="fillspeed"></div></div>
+    <div id="fuel" >FUEL <hr><br> <div class="fillfuel"> </div></div>
+    <script src="script.js"></script>
+</body>
+
+</html>
